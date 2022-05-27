@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
 
   const fetchPassportUserData = useCallback(async () => {
     try {
-      const response = await fetch(`/api/user/passport_user`, {
+      const response = await fetch(`/api/auth/passport_user`, {
         credentials: 'include',
       });
 
@@ -82,7 +82,7 @@ const UserProvider = ({ children }) => {
   const logout = async () => {
     dispatch({ type: 'IS_LOADING' });
     try {
-      await fetch(`/api/user/logout`, {
+      await fetch(`/api/auth/logout`, {
         method: 'POST',
         headers: { credentials: 'include' },
       });

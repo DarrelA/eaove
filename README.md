@@ -14,3 +14,9 @@
 - Ideas Page
 - User Account Dashboard
 - Reputation System
+
+## Issues
+
+### Non-Critical
+
+- InternalOAuthError in errorMiddleware.js

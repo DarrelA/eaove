@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  fetchPassportUserData,
   googleCallback,
   googleRedirect,
   passportLogout,
@@ -9,6 +10,7 @@ const router = express.Router();
 
 router.get('/google', googleRedirect);
 router.get('/google/callback', googleCallback);
-router.get('/logout', passportLogout);
+router.get('/passport_user', fetchPassportUserData);
+router.post('/logout', passportLogout);
 
 export default router;
