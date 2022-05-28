@@ -21,15 +21,17 @@ const Navbar = () => {
           {_id && (
             <>
               <li>
+                <Link to="/newidea" className="main-nav-link nav-cta">
+                  New Idea
+                </Link>
+              </li>
+              <li>
                 <Link to="/" className="main-nav-link" onClick={logout}>
                   Logout
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/dashboard"
-                  className={!avatar ? 'main-nav-link nav-cta' : 'main-nav-link '}
-                >
+                <Link to="/dashboard" className={'main-nav-link '}>
                   {!avatar ? (
                     'Profile'
                   ) : (

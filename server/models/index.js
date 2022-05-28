@@ -1,6 +1,6 @@
-import commentModel from './commentModel';
-import userModel from './http-error.js';
-import ideaModel from './ideaModel';
+import Comment from './commentModel.js';
+import User from './http-error.js';
+import Idea from './ideaModel.js';
 import HttpError from './userModel.js';
 
-export { HttpError, userModel, ideaModel, commentModel };
+export { HttpError, User, Idea, Comment };

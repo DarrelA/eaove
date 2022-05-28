@@ -39,6 +39,22 @@ const userReducer = (state, action) => {
       };
     }
 
+    case 'NEW_IDEA_SUCCESS': {
+      return { ...state, isLoading: false, ...action.payload };
+    }
+
+    case 'NEW_IDEA_FAIL': {
+      return { ...state, isLoading: false, message: action.payload };
+    }
+
+    case 'GET_ALL_IDEAS_SUCCESS': {
+      return { ...state, isLoading: false, ideas: action.payload };
+    }
+
+    case 'GET_ALL_IDEAS_FAIL': {
+      return { ...state, isLoading: false, message: action.payload };
+    }
+
     default:
       return initialState;
   }
@@ -67,6 +83,7 @@ const UserProvider = ({ children }) => {
 
       const data = await response.json();
       const { _id, avatar, name, isAdmin } = data;
+      console.log(data);
       if (!response.ok) throw new Error(data.message);
 
       dispatch({
@@ -75,26 +92,59 @@ const UserProvider = ({ children }) => {
       });
 
       addUserDataToLocalStorage(_id, avatar, name, isAdmin);
-      clearAlert();
     } catch (e) {}
   }, []);
 
   const logout = async () => {
     dispatch({ type: 'IS_LOADING' });
+    clearAlert();
+
     try {
       await fetch(`/api/auth/logout`, {
         method: 'POST',
-        headers: { credentials: 'include' },
+        credentials: 'include',
       });
 
       dispatch({ type: 'LOGOUT_USER_SUCCESS' });
       localStorage.removeItem('userData');
-      clearAlert();
     } catch (e) {
       console.log(e);
-      clearAlert();
     }
   };
+
+  const newIdea = async ({ title, description, tags }) => {
+    dispatch({ type: 'IS_LOADING' });
+    clearAlert();
+
+    try {
+      const response = await fetch(`/api/idea/newidea`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description, tags }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'NEW_IDEA_SUCCESS', payload: data });
+    } catch (e) {
+      dispatch({ type: 'NEW_IDEA_FAIL', payload: e });
+    }
+  };
+
+  const getAllIdeas = useCallback(async () => {
+    dispatch({ type: 'IS_LOADING' });
+    clearAlert();
+
+    try {
+      const response = await fetch(`/api/idea/ideas`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'GET_ALL_IDEAS_SUCCESS', payload: data });
+    } catch (e) {
+      dispatch({ type: 'GET_ALL_IDEAS_FAIL', payload: e });
+    }
+  }, []);
 
   return (
     <UserContext.Provider
@@ -102,6 +152,8 @@ const UserProvider = ({ children }) => {
         ...userState,
         fetchPassportUserData,
         logout,
+        newIdea,
+        getAllIdeas,
       }}
     >
       {children}
