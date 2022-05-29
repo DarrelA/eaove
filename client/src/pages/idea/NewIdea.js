@@ -27,6 +27,16 @@ const NewIdea = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    if (formData.title.length > 150)
+      return toast.error('Please keep within 150 characters.');
+
+    if (formData.tags.split(',').length > 5)
+      return toast.error('Please keep it within a maximum of 5 tags');
+
+    if (formData.description.length > 3000)
+      return toast.error('Please keep within 3,000 characters.');
+
     newIdea(formData);
   };
 

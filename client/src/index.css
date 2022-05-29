@@ -17,8 +17,7 @@ html {
 }
 
 .container {
-  max-width: 120rem;
-  padding: 0 3.2rem;
+  max-width: 210rem;
   margin: 0 auto;
   height: 100vh;
   font-size: 1.8rem;

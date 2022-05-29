@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import useUserContext from '../context/userContext';
-import { Navbar } from '../components';
+import { Navbar, Idea } from '../components';
 import classes from './Landing.module.css';
 
 const Landing = () => {
@@ -9,7 +9,7 @@ const Landing = () => {
   const { isLoading, message, getAllIdeas, ideas } = userContext;
 
   useEffect(() => {
-    if (!!message) toast.error(message);
+    if (!!message && message !== 'success') toast.error(message);
   }, [message]);
 
   useEffect(() => {
@@ -23,7 +23,9 @@ const Landing = () => {
     <>
       <Navbar />
       <div className={`container ${classes.grid}`}>
-        <h2>{ideas?.map((idea) => idea.title)}</h2>
+        {ideas?.map((idea) => (
+          <Idea key={idea._id} idea={idea} />
+        ))}
       </div>
     </>
   );
