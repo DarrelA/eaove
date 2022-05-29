@@ -15,12 +15,17 @@
 }
 
 .card h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   color: inherit;
   margin-bottom: 1rem;
-  text-align: center;
+  height: 40%;
+  overflow-y: auto;
 }
 
-.card div {
+.card .tag {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -29,13 +34,38 @@
 
 .card span {
   color: inherit;
+  border: 1px solid;
+  border-radius: 3rem;
+  padding: 0.1rem 1rem;
 }
 
 .card p {
   padding: 3rem;
   color: inherit;
-  height: 50%;
-  overflow-y: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card button {
+  background-color: transparent;
+  border: none;
+}
+
+.card .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 20%;
+  margin: 1.5rem;
+}
+
+.card .actions svg {
+  pointer-events: none;
+}
+
+.card .icons {
+  color: #cf711f;
 }
 
 /************************/
@@ -52,13 +82,13 @@
 @media (max-width: 87em) {
   .card {
     width: 36rem;
-    height: 36rem;
+    height: 40rem;
   }
 }
 
 @media (max-width: 58em) {
   .card {
     width: 32rem;
-    height: 32rem;
+    height: 40rem;
   }
 }

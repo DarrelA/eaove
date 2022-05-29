@@ -30,12 +30,75 @@ const newIdea = async (req, res, next) => {
 
 const getAllIdeas = async (req, res, next) => {
   try {
-    const idea = await Idea.find({}).populate('creator', 'name');
-    return res.status(200).send(idea);
+    if (req.user) {
+      const ideas = await Idea.find({}).populate('creator', 'name');
+      ideas.forEach((idea) => {
+        idea.upvotes = idea.upvotes.filter((id) => String(id) === String(req.user._id));
+        idea.downvotes = idea.downvotes.filter(
+          (id) => String(id) === String(req.user._id)
+        );
+      });
+      return res.status(200).send(ideas);
+    } else {
+      const ideas = await Idea.find({})
+        .select('-upvotes -downvotes')
+        .populate('creator', 'name');
+      return res.status(200).send(ideas);
+    }
   } catch (e) {
     console.log(e);
     return next(new HttpError('Something went wrong!', 500));
   }
 };
 
-export { newIdea, getAllIdeas };
+const voteIdea = async (req, res, next) => {
+  const idea = await Idea.findById(req.body.ideaId);
+  if (!idea) return next(new HttpError('Idea not found.', 400));
+  if (!req.body.vote) return next(new HttpError('Please cast your vote.', 400));
+
+  // Ensure each user can only cast a single vote which is either upvote or downvote
+  const upvotedByUser = idea.upvotes.filter((id) => String(id) === String(req.user._id));
+  const downvotedByUser = idea.downvotes.filter(
+    (id) => String(id) === String(req.user._id)
+  );
+
+  try {
+    if (req.body.vote === 'upvote') {
+      if (downvotedByUser.length === 1) {
+        idea.downvotes = idea.downvotes.filter(
+          (id) => String(id) !== String(req.user._id)
+        );
+        idea.downvotesCount--;
+      }
+      if (upvotedByUser.length === 0) {
+        idea.upvotes.push(req.user._id);
+        idea.upvotesCount++;
+      } else {
+        idea.upvotes = idea.upvotes.filter((id) => String(id) !== String(req.user._id));
+        idea.upvotesCount--;
+      }
+    } else if (req.body.vote === 'downvote') {
+      if (upvotedByUser.length === 1) {
+        idea.upvotes = idea.upvotes.filter((id) => String(id) !== String(req.user._id));
+        idea.upvotesCount--;
+      }
+      if (downvotedByUser.length === 0) {
+        idea.downvotes.push(req.user._id);
+        idea.downvotesCount++;
+      } else {
+        idea.downvotes = idea.downvotes.filter(
+          (id) => String(id) !== String(req.user._id)
+        );
+        idea.downvotesCount--;
+      }
+    }
+
+    await idea.save();
+    return res.status(201).send({ message: 'success' });
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
+export { newIdea, getAllIdeas, voteIdea };

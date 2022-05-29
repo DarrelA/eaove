@@ -7,7 +7,7 @@ const googleRedirect = passport.authenticate('google', {
 });
 
 const googleCallback = passport.authenticate('google', {
-  successRedirect: '/dashboard',
+  successRedirect: '/',
   failureRedirect: '/register',
 });
 

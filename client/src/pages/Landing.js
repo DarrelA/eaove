@@ -9,6 +9,7 @@ const Landing = () => {
   const { isLoading, message, getAllIdeas, ideas } = userContext;
 
   useEffect(() => {
+    if (message === 'success') window.location.reload(); // @TODO Fix rerender for deep compare
     if (!!message && message !== 'success') toast.error(message);
   }, [message]);
 

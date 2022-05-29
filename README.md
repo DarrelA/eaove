@@ -26,4 +26,5 @@
 
 ### Non-Critical
 
+1. useEffect deep compare to rerender issue in Landing.js
 2. InternalOAuthError in errorMiddleware.js
