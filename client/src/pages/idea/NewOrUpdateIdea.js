@@ -1,43 +1,55 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Navbar } from '../../components';
 import useUserContext from '../../context/userContext';
 
-const initialState = {
-  title: '',
-  description: '',
-  tags: '',
-};
-
-const NewIdea = () => {
+const NewOrUpdateIdea = () => {
   const userContext = useUserContext();
-  const { isLoading, message, newIdea } = userContext;
-  const [formData, setFormData] = useState(initialState);
+  const { isLoading, message, ideas, newIdea, updateIdea } = userContext;
+  const [editMode, setEditMode] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [tags, setTags] = useState('');
 
   const navigate = useNavigate();
+  const { mode, ideaId } = useParams();
 
   useEffect(() => {
+    mode === 'edit' ? setEditMode(true) : setEditMode(false);
     if (message === 'success') navigate('/');
     else if (!!message) toast.error(message);
-  }, [message, navigate]);
+  }, [mode, message, navigate]);
 
-  const inputHandler = (e) =>
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  useEffect(() => {
+    if (editMode) {
+      const ideaIdx = ideas.findIndex((idea) => idea._id === ideaId);
+      const idea = { ...ideas[ideaIdx] };
+      setTitle(idea.title);
+      setDescription(idea.description);
+      setTags(idea.tags.join(','));
+    }
+  }, [editMode, ideas, ideaId]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    title.trim();
+    description.trim();
+    tags.trim();
 
-    if (formData.title.length > 150)
-      return toast.error('Please keep within 150 characters.');
+    if (title.length > 150) return toast.error('Please keep within 150 characters.');
 
-    if (formData.tags.split(',').length > 5)
+    if (tags.split(',').length > 5)
       return toast.error('Please keep it within a maximum of 5 tags');
 
-    if (formData.description.length > 3000)
+    // @TODO Add validation for tag's length
+
+    if (description.length > 3000)
       return toast.error('Please keep within 3,000 characters.');
 
-    newIdea(formData);
+    editMode
+      ? updateIdea({ title, description, tags, ideaId })
+      : newIdea({ title, description, tags });
   };
 
   if (isLoading) return; // @TODO Add spinner
@@ -47,7 +59,7 @@ const NewIdea = () => {
       <Navbar />
       <section className="container center" id="cta">
         <form className="form" onSubmit={submitHandler}>
-          <h2>New Idea</h2>
+          <h2>{editMode ? 'Update Idea' : 'New Idea'}</h2>
 
           <div>
             <label htmlFor="title">Title</label>
@@ -55,9 +67,10 @@ const NewIdea = () => {
               type="text"
               name="title"
               id="title"
+              value={title}
               placeholder="Million dollars super original idea!"
               required
-              onChange={inputHandler}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
@@ -67,8 +80,9 @@ const NewIdea = () => {
               type="text"
               name="description"
               id="description"
+              value={description}
               placeholder="It is something that no one on Earth have thought about! I am so smart!"
-              onChange={inputHandler}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
@@ -78,16 +92,17 @@ const NewIdea = () => {
               type="text"
               name="tags"
               id="tags"
+              value={tags}
               placeholder="onewordtag,comma,thirdtag"
-              onChange={inputHandler}
+              onChange={(e) => setTags(e.target.value)}
             />
           </div>
 
-          <button className="btn btn--form">Submit</button>
+          <button className="btn btn--form">{editMode ? 'Update' : 'Submit'}</button>
         </form>
       </section>
     </>
   );
 };
 
-export default NewIdea;
+export default NewOrUpdateIdea;

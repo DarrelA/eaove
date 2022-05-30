@@ -9,6 +9,8 @@ const newIdea = async (req, res, next) => {
   if (tags.split(',').length > 5)
     return next(new HttpError('Please keep it within a maximum of 5 tags', 400));
 
+  // @TODO Add validation for tag's length
+
   if (title.length > 3000)
     return next(new HttpError('Please keep within 3000 characters.', 400));
 
@@ -101,4 +103,35 @@ const voteIdea = async (req, res, next) => {
   }
 };
 
-export { newIdea, getAllIdeas, voteIdea };
+const updateIdea = async (req, res, next) => {
+  const { title, description, tags } = req.body;
+
+  if (!title) return next(new HttpError('Please provide a title.', 400));
+  if (title.length > 150)
+    return next(new HttpError('Please keep within 150 characters.', 400));
+
+  if (tags.split(',').length > 5)
+    return next(new HttpError('Please keep it within a maximum of 5 tags', 400));
+
+  // @TODO Add validation for tag's length
+
+  if (description.length > 3000)
+    return next(new HttpError('Please keep within 3000 characters.', 400));
+
+  try {
+    let idea = await Idea.findOne({ _id: req.body.ideaId, creator: req.user._id });
+    if (!idea) return next(new HttpError('No idea', 400));
+
+    if (title) idea.title = title;
+    if (description) idea.description = description;
+    if (tags) idea.tags = tags.replace(/\s/g, '').split(','); // remove whitespace & convert str to array
+
+    await idea.save();
+    return res.status(201).send({ message: 'success' });
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
+export { newIdea, getAllIdeas, voteIdea, updateIdea };

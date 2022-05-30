@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserContext from '../context/userContext';
 import { Card } from './';
 import classes from './Card.module.css';
-import { GoTriangleUp, GoTriangleDown } from 'react-icons/go';
 
 const initialState = {
   ideaId: '',
@@ -37,7 +38,9 @@ const Idea = ({ idea }) => {
   return (
     <Card>
       <div className={classes.content}>
-        <h3>{idea.title}</h3>
+        <Link to={`/ideas/${idea._id}`}>
+          <h3>{idea.title}</h3>
+        </Link>
         <div className={classes.tags}>{tag}</div>
         <p>{idea.description}</p>
       </div>

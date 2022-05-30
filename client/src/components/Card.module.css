@@ -35,6 +35,11 @@
   background: #eee;
 }
 
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .card .tags {
   display: flex;
   flex-wrap: wrap;

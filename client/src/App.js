@@ -7,7 +7,8 @@ import {
   NotFound,
   RegisterLogin,
   SharedLayout,
-  NewIdea,
+  NewOrUpdateIdea,
+  ThisIdea,
 } from './pages/index.js';
 
 const App = () => {
@@ -21,8 +22,9 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<RegisterLogin />} />
-      <Route path="/newidea" element={<NewIdea />} />
       <Route path="/dashboard" element={<SharedLayout />} />
+      <Route path="/ideas/:ideaId" element={<ThisIdea />} />
+      <Route path="/idea/:mode/:ideaId" element={<NewOrUpdateIdea />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

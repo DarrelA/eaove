@@ -24,7 +24,7 @@ const Navbar = () => {
           {_id && (
             <>
               <li>
-                <Link to="/newidea" className="main-nav-link nav-cta">
+                <Link to="/idea/create/newidea" className="main-nav-link nav-cta">
                   New Idea
                 </Link>
               </li>

@@ -8,10 +8,17 @@
 ### Implemented
 
 - Google Login
+- Submit new idea to database
+- Get all ideas from database
+- Update creator's idea in database
+- Upvote & downvote ideas
+
+### WIP
+
+- Ideas Page
 
 ### Coming Soon
 
-- Ideas Page
 - User Account Dashboard
 - Reputation System
 - https://colorpalettes.earth/

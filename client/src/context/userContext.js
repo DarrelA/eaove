@@ -63,6 +63,14 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload };
     }
 
+    case 'UPDATE_IDEA_SUCCESS': {
+      return { ...state, isLoading: false, ...action.payload };
+    }
+
+    case 'UPDATE_IDEA_FAIL': {
+      return { ...state, isLoading: false, message: action.payload };
+    }
+
     default:
       return initialState;
   }
@@ -92,6 +100,7 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       const { _id, avatar, name, isAdmin } = data;
       console.log(data);
+      if (data.message === 'User not found.') dispatch({ type: 'LOGOUT_USER_SUCCESS' });
       if (!response.ok) throw new Error(data.message);
 
       dispatch({
@@ -174,6 +183,26 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const updateIdea = async ({ title, description, tags, ideaId }) => {
+    dispatch({ type: 'IS_LOADING' });
+    clearAlert();
+
+    try {
+      const response = await fetch(`/api/idea/updateidea`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description, tags, ideaId }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'UPDATE_IDEA_SUCCESS', payload: data });
+    } catch (e) {
+      dispatch({ type: 'UPDATE_IDEA_FAIL', payload: e });
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -183,6 +212,7 @@ const UserProvider = ({ children }) => {
         newIdea,
         getAllIdeas,
         voteIdea,
+        updateIdea,
       }}
     >
       {children}
