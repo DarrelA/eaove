@@ -123,8 +123,8 @@ const updateIdea = async (req, res, next) => {
     if (!idea) return next(new HttpError('No idea', 400));
 
     if (title) idea.title = title;
-    if (description) idea.description = description;
-    if (tags) idea.tags = tags.replace(/\s/g, '').split(','); // remove whitespace & convert str to array
+    idea.description = description;
+    idea.tags = tags.replace(/\s/g, '').split(','); // remove whitespace & convert str to array
 
     await idea.save();
     return res.status(201).send({ message: 'success' });

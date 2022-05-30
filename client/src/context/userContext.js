@@ -114,7 +114,6 @@ const UserProvider = ({ children }) => {
 
   const logout = async () => {
     dispatch({ type: 'IS_LOADING' });
-    clearAlert();
 
     try {
       await fetch(`/api/auth/logout`, {
@@ -124,14 +123,15 @@ const UserProvider = ({ children }) => {
 
       dispatch({ type: 'LOGOUT_USER_SUCCESS' });
       localStorage.removeItem('userData');
+      clearAlert();
     } catch (e) {
       console.log(e);
+      clearAlert();
     }
   };
 
   const newIdea = async ({ title, description, tags }) => {
     dispatch({ type: 'IS_LOADING' });
-    clearAlert();
 
     try {
       const response = await fetch(`/api/idea/newidea`, {
@@ -144,28 +144,32 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       dispatch({ type: 'NEW_IDEA_SUCCESS', payload: data });
+      clearAlert();
     } catch (e) {
       dispatch({ type: 'NEW_IDEA_FAIL', payload: e });
+      clearAlert();
     }
   };
 
   const getAllIdeas = useCallback(async () => {
     dispatch({ type: 'IS_LOADING' });
-    clearAlert();
 
     try {
       const response = await fetch(`/api/idea/ideas`);
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       dispatch({ type: 'GET_ALL_IDEAS_SUCCESS', payload: data });
+
+      // @TODO: Store ideas in localStorage
+      clearAlert();
     } catch (e) {
       dispatch({ type: 'GET_ALL_IDEAS_FAIL', payload: e });
+      clearAlert();
     }
   }, []);
 
   const voteIdea = async ({ ideaId, vote }) => {
     dispatch({ type: 'IS_LOADING' });
-    clearAlert();
 
     try {
       const response = await fetch(`/api/idea/voteidea`, {
@@ -178,14 +182,15 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       dispatch({ type: 'NEW_IDEA_SUCCESS', payload: data });
+      clearAlert();
     } catch (e) {
       dispatch({ type: 'NEW_IDEA_FAIL', payload: e });
+      clearAlert();
     }
   };
 
   const updateIdea = async ({ title, description, tags, ideaId }) => {
     dispatch({ type: 'IS_LOADING' });
-    clearAlert();
 
     try {
       const response = await fetch(`/api/idea/updateidea`, {
@@ -198,8 +203,10 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       dispatch({ type: 'UPDATE_IDEA_SUCCESS', payload: data });
+      clearAlert();
     } catch (e) {
       dispatch({ type: 'UPDATE_IDEA_FAIL', payload: e });
+      clearAlert();
     }
   };
 

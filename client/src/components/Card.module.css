@@ -7,10 +7,18 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
   background-color: white;
-  width: 48rem;
-  height: 48rem;
   justify-self: center;
   align-self: center;
+}
+
+.small {
+  width: 48rem;
+  height: 48rem;
+}
+
+.big {
+  width: 86rem;
+  height: 98rem;
 }
 
 .card:first-letter {
@@ -21,7 +29,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 40rem;
 }
 
 .card h3 {
@@ -46,10 +53,13 @@
   align-items: center;
   justify-content: space-around;
   margin: 1.5rem;
+  max-height: 15rem;
+  overflow-y: auto;
 }
 
 .card .tag {
   margin: 0.5rem 0;
+  word-break: break-word;
 }
 
 .card span {
@@ -62,9 +72,19 @@
 .card p {
   padding: 1rem;
   color: inherit;
+  white-space: pre-wrap;
+}
+
+.small p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.big p {
+  height: 67rem;
+  overflow-y: auto;
+  background: #eee;
 }
 
 .card button {
@@ -93,22 +113,55 @@
 /************************/
 
 @media (max-width: 116em) {
-  .card {
+  .small {
     width: 44rem;
     height: 48rem;
   }
 }
 
 @media (max-width: 87em) {
-  .card {
+  .small {
     width: 36rem;
     height: 48rem;
   }
 }
 
 @media (max-width: 58em) {
-  .card {
+  .small {
     width: 32rem;
     height: 48rem;
+  }
+}
+
+@media (max-width: 87em) {
+  .big {
+    width: 74rem;
+    height: 86rem;
+  }
+
+  .big p {
+    height: 52rem;
+  }
+}
+
+@media (max-width: 58em) {
+  .big {
+    width: 52rem;
+    height: 62rem;
+  }
+
+  .big p {
+    height: 24rem;
+  }
+}
+
+@media (max-width: 52em) {
+  .big {
+    width: 32rem;
+    height: 52rem;
+  }
+
+  .big p {
+    height: 14rem;
   }
 }

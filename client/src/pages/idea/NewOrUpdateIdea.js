@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Navbar } from '../../components';
 import useUserContext from '../../context/userContext';
 
 const NewOrUpdateIdea = () => {
   const userContext = useUserContext();
-  const { isLoading, message, ideas, newIdea, updateIdea } = userContext;
+  const { isLoading, message, newIdea, updateIdea } = userContext;
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
+
+  const location = useLocation();
+  const { idea } = location.state || {};
 
   const navigate = useNavigate();
   const { mode, ideaId } = useParams();
@@ -22,19 +25,16 @@ const NewOrUpdateIdea = () => {
   }, [mode, message, navigate]);
 
   useEffect(() => {
-    if (editMode && ideas) {
-      const ideaIdx = ideas.findIndex((idea) => idea._id === ideaId);
-      const idea = { ...ideas[ideaIdx] };
+    if (editMode && idea) {
       setTitle(idea.title);
       setDescription(idea.description);
       setTags(idea.tags.join(','));
     }
-  }, [editMode, ideas, ideaId]);
+  }, [editMode, idea, ideaId]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     title.trim();
-    description.trim();
     tags.trim();
 
     if (title.length > 150) return toast.error('Please keep within 150 characters.');

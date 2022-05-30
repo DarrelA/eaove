@@ -191,6 +191,7 @@ html {
   font-size: 1.8rem;
   font-family: inherit;
   color: inherit;
+  white-space: pre-wrap;
 }
 
 .form p {

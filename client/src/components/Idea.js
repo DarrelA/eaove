@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
-import { Link } from 'react-router-dom';
+import { GoPencil, GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserContext from '../context/userContext';
 import { Card } from './';
@@ -16,11 +16,15 @@ const Idea = ({ idea }) => {
   const { _id, isLoading, message, voteIdea } = userContext;
   const [formData, setFormData] = useState(initialState);
 
-  const tag = idea.tags.map((tag, i) => (
-    <span key={i} className={classes.tag}>
-      {tag}
-    </span>
-  ));
+  const { ideaId } = useParams();
+
+  const tag =
+    idea.tags[0] !== '' && // Prevent empty span when there is no tag
+    idea.tags.map((tag, i) => (
+      <span key={i} className={classes.tag}>
+        {tag}
+      </span>
+    ));
 
   useEffect(() => {
     if (!!message && message !== 'success') toast.error(message);
@@ -36,7 +40,7 @@ const Idea = ({ idea }) => {
   if (isLoading) return; // @TODO Add spinner
 
   return (
-    <Card>
+    <Card ideaId={ideaId}>
       <div className={classes.content}>
         <Link to={`/ideas/${idea._id}`}>
           <h3>{idea.title}</h3>
@@ -46,6 +50,12 @@ const Idea = ({ idea }) => {
       </div>
       {_id && (
         <div className={classes.actions}>
+          {ideaId && _id === idea.creator._id && (
+            <Link to={`/idea/edit/${idea._id}`} state={{ idea }}>
+              <GoPencil size={'4rem'} />
+            </Link>
+          )}
+
           <button type="button" id="upvote" onClick={voteHandler}>
             <GoTriangleUp
               size={'4rem'}

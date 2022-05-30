@@ -34,3 +34,4 @@
 
 1. useEffect deep compare to rerender issue in Landing.js
 2. InternalOAuthError in errorMiddleware.js
+3. Instead of navigating to Landing.js from thisIdea.js after casting vote, rerender page so user can continue viewing comments.
