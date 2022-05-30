@@ -44,7 +44,7 @@ const userReducer = (state, action) => {
     }
 
     case 'NEW_IDEA_FAIL': {
-      return { ...state, isLoading: false, message: action.payload };
+      return { ...state, isLoading: false, message: action.payload.message };
     }
 
     case 'GET_ALL_IDEAS_SUCCESS': {
@@ -52,7 +52,7 @@ const userReducer = (state, action) => {
     }
 
     case 'GET_ALL_IDEAS_FAIL': {
-      return { ...state, isLoading: false, message: action.payload };
+      return { ...state, isLoading: false, message: action.payload.message };
     }
 
     case 'VOTE_IDEA_SUCCESS': {
@@ -60,7 +60,7 @@ const userReducer = (state, action) => {
     }
 
     case 'VOTE_IDEA_FAIL': {
-      return { ...state, isLoading: false, message: action.payload };
+      return { ...state, isLoading: false, message: action.payload.message };
     }
 
     case 'UPDATE_IDEA_SUCCESS': {
@@ -68,7 +68,7 @@ const userReducer = (state, action) => {
     }
 
     case 'UPDATE_IDEA_FAIL': {
-      return { ...state, isLoading: false, message: action.payload };
+      return { ...state, isLoading: false, message: action.payload.message };
     }
 
     default:

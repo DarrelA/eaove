@@ -22,7 +22,7 @@ const NewOrUpdateIdea = () => {
   }, [mode, message, navigate]);
 
   useEffect(() => {
-    if (editMode) {
+    if (editMode && ideas) {
       const ideaIdx = ideas.findIndex((idea) => idea._id === ideaId);
       const idea = { ...ideas[ideaIdx] };
       setTitle(idea.title);

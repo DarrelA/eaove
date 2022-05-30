@@ -28,8 +28,7 @@
 
 ### Critical
 
-1. ObjectParameterError in ideaController.js: new HttpError passed via next() will break the app
-   - Might be something to do with authMiddleware as req.user data is being passed to errorMiddleware
+👍🏻
 
 ### Non-Critical
 

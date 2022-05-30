@@ -4,7 +4,6 @@ const notFoundMiddleware = (req, res, next) =>
   next(new HttpError(`Not Found - ${req.originalUrl}`, 404));
 
 const errorMiddleware = (err, req, res, next) => {
-  // console.log('middeware', err);
   if (err.name === 'InternalOAuthError') return; // prevents cannot fetch user error when logging in
   if (res.headersSent) return next(err);
   res.status(err.code || 500).json({
