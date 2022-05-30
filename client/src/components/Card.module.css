@@ -1,4 +1,7 @@
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 3rem;
   margin: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -14,22 +17,34 @@
   text-transform: uppercase;
 }
 
-.card h2 {
+.card .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 40rem;
+}
+
+.card h3 {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: inherit;
   margin-bottom: 1rem;
-  height: 40%;
   overflow-y: auto;
+  background: #eee;
 }
 
-.card .tag {
+.card .tags {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-around;
   margin: 1.5rem;
+}
+
+.card .tag {
+  margin: 0.5rem 0;
 }
 
 .card span {
@@ -40,7 +55,7 @@
 }
 
 .card p {
-  padding: 3rem;
+  padding: 1rem;
   color: inherit;
   white-space: nowrap;
   overflow: hidden;
@@ -56,7 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 20%;
+  height: 5rem;
   margin: 1.5rem;
 }
 
@@ -75,20 +90,20 @@
 @media (max-width: 116em) {
   .card {
     width: 44rem;
-    height: 44rem;
+    height: 48rem;
   }
 }
 
 @media (max-width: 87em) {
   .card {
     width: 36rem;
-    height: 40rem;
+    height: 48rem;
   }
 }
 
 @media (max-width: 58em) {
   .card {
     width: 32rem;
-    height: 40rem;
+    height: 48rem;
   }
 }

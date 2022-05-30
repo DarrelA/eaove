@@ -7,6 +7,9 @@ const Navbar = () => {
   return (
     <header className="header">
       {/* @TODO: Add Eaove Logo */}
+      <Link to="/" className="main-nav-link">
+        Home
+      </Link>
 
       <nav className="main-nav">
         <ul className="main-nav-list">

@@ -15,14 +15,17 @@ const Idea = ({ idea }) => {
   const { _id, isLoading, message, voteIdea } = userContext;
   const [formData, setFormData] = useState(initialState);
 
-  const tag = idea.tags.map((tag, i) => <span key={i}>{tag}</span>);
+  const tag = idea.tags.map((tag, i) => (
+    <span key={i} className={classes.tag}>
+      {tag}
+    </span>
+  ));
 
   useEffect(() => {
     if (!!message && message !== 'success') toast.error(message);
   }, [message]);
 
   const voteHandler = (e) => {
-    console.log(e.target.id);
     setFormData((formData.ideaId = idea._id));
     setFormData((formData.vote = e.target.id));
     if (!formData.vote) return;
@@ -33,9 +36,11 @@ const Idea = ({ idea }) => {
 
   return (
     <Card>
-      <h2>{idea.title}</h2>
-      <div className={classes.tag}>{tag}</div>
-      <p>{idea.description}</p>
+      <div className={classes.content}>
+        <h3>{idea.title}</h3>
+        <div className={classes.tags}>{tag}</div>
+        <p>{idea.description}</p>
+      </div>
       {_id && (
         <div className={classes.actions}>
           <button type="button" id="upvote" onClick={voteHandler}>
