@@ -55,11 +55,27 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
+    case 'GET_IDEA_CHALLENGERS_SUCCESS': {
+      return { ...state, isLoading: false, challengeIdea: action.payload };
+    }
+
+    case 'GET_IDEA_CHALLENGERS_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
     case 'VOTE_IDEA_SUCCESS': {
       return { ...state, isLoading: false };
     }
 
     case 'VOTE_IDEA_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
+    case 'CHALLENGE_IDEA_SUCCESS': {
+      return { ...state, isLoading: false };
+    }
+
+    case 'CHALLENGE_IDEA_FAIL': {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
@@ -176,6 +192,22 @@ const UserProvider = ({ children }) => {
     }
   }, []);
 
+  const getIdeaChallengers = useCallback(async (ideaId) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/idea/${ideaId}/challengers`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'GET_IDEA_CHALLENGERS_SUCCESS', payload: data });
+
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'GET_IDEA_CHALLENGERS_FAIL', payload: e });
+      clearAlert();
+    }
+  }, []);
+
   const voteIdea = async ({ ideaId, vote }) => {
     dispatch({ type: 'IS_LOADING' });
 
@@ -193,6 +225,26 @@ const UserProvider = ({ children }) => {
       clearAlert();
     } catch (e) {
       dispatch({ type: 'NEW_IDEA_FAIL', payload: e });
+      clearAlert();
+    }
+  };
+
+  const acceptIdeaChallenge = async (ideaId) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/idea/acceptideachallenge/${ideaId}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      getIdeaChallengers(ideaId); // @TODO Better method? And fix flickering?
+      dispatch({ type: 'CHALLENGE_IDEA_SUCCESS', payload: data });
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'CHALLENGE_IDEA_FAIL', payload: e });
       clearAlert();
     }
   };
@@ -245,7 +297,9 @@ const UserProvider = ({ children }) => {
         logout,
         newIdea,
         getAllIdeas,
+        getIdeaChallengers,
         voteIdea,
+        acceptIdeaChallenge,
         updateIdea,
         deleteIdea,
       }}

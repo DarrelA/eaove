@@ -12,7 +12,11 @@ const ideaSchema = mongoose.Schema(
     downvotesCount: { type: Number, default: 0 },
     comments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
     commentsCount: { type: Number, default: 0 },
-    challengerCount: { type: Number, default: 0 },
+    challengeOpen: { type: Boolean, default: true },
+    challengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    challengersComments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
+    challengersCount: { type: Number, default: 0 },
+    challengersCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     completedCount: { type: Number, default: 0 },
   },
   { timestamps: true }

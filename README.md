@@ -13,6 +13,7 @@
 - Update creator's idea in database
 - Delete creator's idea in database
 - Upvote & downvote ideas
+- Challenge ideas
 
 ### WIP
 
@@ -22,6 +23,13 @@
 
 - User Account Dashboard
 - Reputation System
+  - User has completed the challenge
+  - Creator may place a bounty
+    - Creator set a time limit for it
+  - If user reports that creator has yet to donate after a week is true
+  - User may downvote creator after stating the reason
+  - Creator may choose to response
+  - Communication will be public to allow other challengers to decide if they want to commit to challenges posted by creator at their own discretion
 - https://colorpalettes.earth/
 - @TODO
 

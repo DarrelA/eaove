@@ -9,6 +9,7 @@ import {
   SharedLayout,
   NewOrUpdateIdea,
   ThisIdea,
+  IdeaChallengers,
 } from './pages/index.js';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/dashboard" element={<SharedLayout />} />
       <Route path="/ideas/:ideaId" element={<ThisIdea />} />
       <Route path="/idea/:mode/:ideaId" element={<NewOrUpdateIdea />} />
+      <Route path="/acceptideachallenge/:ideaId" element={<IdeaChallengers />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

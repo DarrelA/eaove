@@ -6,6 +6,7 @@ const commentSchema = mongoose.Schema(
     comment: { type: String, trim: true, maxLength: 1500 },
     upvotes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
     downvotes: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
+    replies: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
   },
   { timestamps: true }
 );

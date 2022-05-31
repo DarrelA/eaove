@@ -87,7 +87,11 @@
   background: #eee;
 }
 
-.card button {
+.card .challenge {
+  background-color: #fae5d3;
+}
+
+.card .actions button {
   background-color: transparent;
   border: none;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { GoPencil, GoTriangleDown, GoTriangleUp, GoTrashcan } from 'react-icons/go';
+import { GoPencil, GoTrashcan, GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+import { RiBoxingFill } from 'react-icons/ri';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserContext from '../context/userContext';
@@ -48,29 +49,41 @@ const Idea = ({ idea }) => {
         <div className={classes.tags}>{tag}</div>
         <p>{idea.description}</p>
       </div>
+
       {_id && (
         <div className={classes.actions}>
           {ideaId && _id === idea.creator._id && (
-            <Link to={`/idea/edit/${idea._id}`} state={{ idea }}>
-              <GoPencil size={'4rem'} />
-            </Link>
-          )}
-          {ideaId && _id === idea.creator._id && (
-            <button type="button" onClick={() => deleteIdea(ideaId)}>
-              <GoTrashcan size={'4rem'} />
-            </button>
+            <>
+              <Link to={`/idea/edit/${idea._id}`} state={{ idea }}>
+                <GoPencil size={'4rem'} />
+              </Link>
+
+              <button type="button" onClick={() => deleteIdea(ideaId)}>
+                <GoTrashcan size={'4rem'} />
+              </button>
+            </>
           )}
 
-          <button type="button" id="upvote" onClick={voteHandler}>
-            <GoTriangleUp
-              size={'4rem'}
-              className={idea.upvotes?.length === 1 ? classes.icons : ''}
-            />
-          </button>
+          <Link to={`/acceptideachallenge/${idea._id}`}>
+            <button type="button" id="challengerscount">
+              <h4>{idea.challengersCount}</h4>
+              <RiBoxingFill size={'4rem'} />
+            </button>
+          </Link>
+
           <button type="button" id="downvote" onClick={voteHandler}>
+            <h4>{idea.downvotesCount}</h4>
             <GoTriangleDown
               size={'4rem'}
               className={idea.downvotes?.length === 1 ? classes.icons : ''}
+            />
+          </button>
+
+          <button type="button" id="upvote" onClick={voteHandler}>
+            <h4>{idea.upvotesCount}</h4>
+            <GoTriangleUp
+              size={'4rem'}
+              className={idea.upvotes?.length === 1 ? classes.icons : ''}
             />
           </button>
         </div>

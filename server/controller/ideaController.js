@@ -53,6 +53,19 @@ const getAllIdeas = async (req, res, next) => {
   }
 };
 
+const getIdeaChallengers = async (req, res, next) => {
+  try {
+    const ideas = await Idea.findById(req.params.ideaid)
+      .select('challengers')
+      .populate('challengers', 'name');
+
+    return res.status(200).send(ideas);
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
 const voteIdea = async (req, res, next) => {
   const idea = await Idea.findById(req.body.ideaId);
   if (!idea) return next(new HttpError('Idea not found.', 400));
@@ -103,7 +116,36 @@ const voteIdea = async (req, res, next) => {
   }
 };
 
+const acceptIdeaChallenge = async (req, res, next) => {
+  try {
+    let idea = await Idea.findById(req.params.ideaid);
+    if (!idea) return next(new HttpError('Idea not found.', 400));
+
+    const challengedByUser = idea.challengers.filter(
+      (id) => String(id) === String(req.user._id)
+    );
+
+    if (challengedByUser.length === 0) {
+      idea.challengers.push(req.user._id);
+      idea.challengersCount++;
+    } else {
+      idea.challengers = idea.challengers.filter(
+        (id) => String(id) !== String(req.user._id)
+      );
+      idea.challengersCount--;
+    }
+
+    await idea.save();
+    return res.status(201).send({ message: 'success' });
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
 const updateIdea = async (req, res, next) => {
+  // @TODO: Prevent edit when there is at least a challenger
+
   const { title, description, tags } = req.body;
 
   if (!title) return next(new HttpError('Please provide a title.', 400));
@@ -150,4 +192,12 @@ const deleteIdea = async (req, res, next) => {
   }
 };
 
-export { newIdea, getAllIdeas, voteIdea, updateIdea, deleteIdea };
+export {
+  getAllIdeas,
+  getIdeaChallengers,
+  newIdea,
+  voteIdea,
+  acceptIdeaChallenge,
+  updateIdea,
+  deleteIdea,
+};
