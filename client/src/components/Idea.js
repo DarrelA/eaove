@@ -22,9 +22,9 @@ const Idea = ({ idea }) => {
   const tag =
     idea.tags[0] !== '' && // Prevent empty span when there is no tag
     idea.tags.map((tag, i) => (
-      <span key={i} className={classes.tag}>
-        {tag}
-      </span>
+      <Link to={`/${tag}`} key={i} className={classes.tag}>
+        <span>{tag}</span>
+      </Link>
     ));
 
   useEffect(() => {

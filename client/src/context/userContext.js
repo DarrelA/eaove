@@ -55,6 +55,14 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
+    case 'GET_IDEAS_BY_TAG_SUCCESS': {
+      return { ...state, isLoading: false, ideas: action.payload };
+    }
+
+    case 'GET_IDEAS_BY_TAG_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
     case 'GET_IDEA_CHALLENGERS_SUCCESS': {
       return { ...state, isLoading: false, challengeIdea: action.payload };
     }
@@ -192,6 +200,23 @@ const UserProvider = ({ children }) => {
     }
   }, []);
 
+  const getIdeasByTags = useCallback(async (tag) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/idea/ideas/${tag}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'GET_IDEAS_BY_TAG_SUCCESS', payload: data });
+
+      // @TODO: Store ideas in localStorage
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'GET_IDEAS_BY_TAG_FAIL', payload: e });
+      clearAlert();
+    }
+  }, []);
+
   const getIdeaChallengers = useCallback(async (ideaId) => {
     dispatch({ type: 'IS_LOADING' });
 
@@ -297,6 +322,7 @@ const UserProvider = ({ children }) => {
         logout,
         newIdea,
         getAllIdeas,
+        getIdeasByTags,
         getIdeaChallengers,
         voteIdea,
         acceptIdeaChallenge,

@@ -44,7 +44,7 @@ const IdeaChallengers = () => {
     <>
       <Navbar />
 
-      {ideaId && (
+      {_id && ideaId && (
         <button
           id="challengeIdea"
           onClick={challengeHandler}

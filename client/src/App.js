@@ -22,6 +22,7 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/:tag" element={<Landing />} />
       <Route path="/login" element={<RegisterLogin />} />
       <Route path="/dashboard" element={<SharedLayout />} />
       <Route path="/ideas/:ideaId" element={<ThisIdea />} />

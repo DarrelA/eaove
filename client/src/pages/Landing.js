@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Idea, Navbar } from '../components';
 import useUserContext from '../context/userContext';
-import { Navbar, Idea } from '../components';
 import classes from './Landing.module.css';
 
 const Landing = () => {
   const userContext = useUserContext();
-  const { isLoading, message, getAllIdeas, ideas } = userContext;
+  const { isLoading, message, ideas, getAllIdeas, getIdeasByTags } = userContext;
+
+  const { tag } = useParams();
 
   useEffect(() => {
     if (message === 'success') window.location.reload(); // @TODO Fix rerender for deep compare
@@ -15,8 +18,9 @@ const Landing = () => {
 
   useEffect(() => {
     const fetchAllIdeas = async () => await getAllIdeas();
-    fetchAllIdeas();
-  }, [getAllIdeas]);
+    const fetchIdeasByTags = async () => await getIdeasByTags(tag);
+    !!tag ? fetchIdeasByTags() : fetchAllIdeas();
+  }, [getAllIdeas, getIdeasByTags, tag]);
 
   if (isLoading) return; // @TODO Add spinner
 

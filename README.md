@@ -14,6 +14,7 @@
 - Delete creator's idea in database
 - Upvote & downvote ideas
 - Challenge ideas
+- Search ideas by tag
 
 ### WIP
 
