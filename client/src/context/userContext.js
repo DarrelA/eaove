@@ -71,6 +71,14 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
+    case 'DELETE_IDEA_SUCCESS': {
+      return { ...state, isLoading: false, ...action.payload };
+    }
+
+    case 'DELETE_IDEA_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
     default:
       return initialState;
   }
@@ -194,7 +202,7 @@ const UserProvider = ({ children }) => {
 
     try {
       const response = await fetch(`/api/idea/updateidea`, {
-        method: 'POST',
+        method: 'PATCH',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, description, tags, ideaId }),
@@ -210,6 +218,25 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const deleteIdea = async (ideaId) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/idea/deleteidea/${ideaId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'DELETE_IDEA_SUCCESS', payload: data });
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'DELETE_IDEA_FAIL', payload: e });
+      clearAlert();
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -220,6 +247,7 @@ const UserProvider = ({ children }) => {
         getAllIdeas,
         voteIdea,
         updateIdea,
+        deleteIdea,
       }}
     >
       {children}

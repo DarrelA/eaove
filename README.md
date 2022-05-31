@@ -11,6 +11,7 @@
 - Submit new idea to database
 - Get all ideas from database
 - Update creator's idea in database
+- Delete creator's idea in database
 - Upvote & downvote ideas
 
 ### WIP

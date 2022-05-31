@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GoPencil, GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+import { GoPencil, GoTriangleDown, GoTriangleUp, GoTrashcan } from 'react-icons/go';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useUserContext from '../context/userContext';
@@ -13,7 +13,7 @@ const initialState = {
 
 const Idea = ({ idea }) => {
   const userContext = useUserContext();
-  const { _id, isLoading, message, voteIdea } = userContext;
+  const { _id, isLoading, message, voteIdea, deleteIdea } = userContext;
   const [formData, setFormData] = useState(initialState);
 
   const { ideaId } = useParams();
@@ -54,6 +54,11 @@ const Idea = ({ idea }) => {
             <Link to={`/idea/edit/${idea._id}`} state={{ idea }}>
               <GoPencil size={'4rem'} />
             </Link>
+          )}
+          {ideaId && _id === idea.creator._id && (
+            <button type="button" onClick={() => deleteIdea(ideaId)}>
+              <GoTrashcan size={'4rem'} />
+            </button>
           )}
 
           <button type="button" id="upvote" onClick={voteHandler}>

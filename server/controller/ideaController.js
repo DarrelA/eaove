@@ -120,7 +120,7 @@ const updateIdea = async (req, res, next) => {
 
   try {
     let idea = await Idea.findOne({ _id: req.body.ideaId, creator: req.user._id });
-    if (!idea) return next(new HttpError('No idea', 400));
+    if (!idea) return next(new HttpError('Does the idea belongs to you?', 400));
 
     if (title) idea.title = title;
     idea.description = description;
@@ -134,4 +134,20 @@ const updateIdea = async (req, res, next) => {
   }
 };
 
-export { newIdea, getAllIdeas, voteIdea, updateIdea };
+const deleteIdea = async (req, res, next) => {
+  // @TODO: Add validation to check if there is any challengers
+
+  try {
+    const idea = await Idea.findOneAndDelete({
+      _id: req.params.ideaid,
+      creator: req.user._id,
+    });
+    if (!idea) return next(new HttpError('Does the idea belongs to you?', 400));
+    return res.status(201).send({ message: 'success' });
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
+export { newIdea, getAllIdeas, voteIdea, updateIdea, deleteIdea };
