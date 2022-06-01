@@ -8,9 +8,14 @@ const NewOrUpdateIdea = () => {
   const userContext = useUserContext();
   const { isLoading, message, newIdea, updateIdea } = userContext;
   const [editMode, setEditMode] = useState(false);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState('');
+
+  const [bounty, setBounty] = useState(0);
+  const [currency, setCurrency] = useState('');
+  const [fundsTransferPlatform, setfundsTransferPlatform] = useState('');
 
   const location = useLocation();
   const { idea } = location.state || {};
@@ -48,8 +53,23 @@ const NewOrUpdateIdea = () => {
       return toast.error('Please keep within 3,000 characters.');
 
     editMode
-      ? updateIdea({ title, description, tags, ideaId })
-      : newIdea({ title, description, tags });
+      ? updateIdea({
+          ideaId,
+          title,
+          description,
+          tags,
+          bounty,
+          currency,
+          fundsTransferPlatform,
+        })
+      : newIdea({
+          title,
+          description,
+          tags,
+          bounty,
+          currency,
+          fundsTransferPlatform,
+        });
   };
 
   if (isLoading) return; // @TODO Add spinner
@@ -97,6 +117,51 @@ const NewOrUpdateIdea = () => {
               onChange={(e) => setTags(e.target.value)}
             />
           </div>
+
+          <div>
+            <label htmlFor="bounty">Pledge bounty amount</label>
+            <input
+              type="number"
+              name="bounty"
+              id="bounty"
+              value={bounty}
+              placeholder="10"
+              onChange={(e) => setBounty(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="currency">Currency</label>
+            <select
+              name="currency"
+              id="currency"
+              value={currency}
+              onChange={(e) =>
+                setCurrency(e.target.options[e.target.options.selectedIndex].value)
+              }
+            >
+              <option value="AUD">AUD</option>
+              <option value="CAD">CAD</option>
+              <option value="GBP">GBP</option>
+              <option value="NZD">NZD</option>
+              <option value="SGD">SGD</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+
+          {bounty > 0 && (
+            <div>
+              <label htmlFor="fundsTransferPlatform">Donate via</label>
+              <input
+                type="text"
+                name="fundsTransferPlatform"
+                id="fundsTransferPlatform"
+                value={fundsTransferPlatform}
+                placeholder="PayPal"
+                onChange={(e) => setfundsTransferPlatform(e.target.value)}
+              />
+            </div>
+          )}
 
           <button className="btn btn--form">{editMode ? 'Update' : 'Submit'}</button>
         </form>

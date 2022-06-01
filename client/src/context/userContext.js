@@ -162,7 +162,14 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const newIdea = async ({ title, description, tags }) => {
+  const newIdea = async ({
+    title,
+    description,
+    tags,
+    bounty,
+    currency,
+    fundsTransferPlatform,
+  }) => {
     dispatch({ type: 'IS_LOADING' });
 
     try {
@@ -170,7 +177,14 @@ const UserProvider = ({ children }) => {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, tags }),
+        body: JSON.stringify({
+          title,
+          description,
+          tags,
+          bounty,
+          currency,
+          fundsTransferPlatform,
+        }),
       });
 
       const data = await response.json();

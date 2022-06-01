@@ -31,7 +31,8 @@
   justify-content: space-around;
 }
 
-.card h3 {
+.card h3,
+.card h4 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,7 +40,13 @@
   color: inherit;
   margin-bottom: 1rem;
   overflow-y: auto;
+}
+
+.card h3 {
   background: #eee;
+}
+.card h4 {
+  background: #fdf2e9;
 }
 
 .card a {

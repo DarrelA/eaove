@@ -1,8 +1,9 @@
 import { HttpError, Idea } from '../models/index.js';
 
 const newIdea = async (req, res, next) => {
-  const { title, description, tags } = req.body;
-  if (!title) return next(new HttpError('Please provide a title', 400));
+  const { title, description, tags, bounty, currency, fundsTransferPlatform } = req.body;
+
+  if (!title) return next(new HttpError('Please provide a title.', 400));
   if (title.length > 150)
     return next(new HttpError('Please keep within 150 characters.', 400));
 
@@ -14,12 +15,26 @@ const newIdea = async (req, res, next) => {
   if (title.length > 3000)
     return next(new HttpError('Please keep within 3000 characters.', 400));
 
+  if (bounty > 0 && !currency)
+    return next(new HttpError('Please provide the currency.', 400));
+
+  if (bounty > 0 && !fundsTransferPlatform)
+    return next(
+      new HttpError(
+        'Please provide the name of the platform that you will be using for fund transfer e.g. PayPal.',
+        400
+      )
+    );
+
+  const bountyObj = { currency, value: bounty, fundsTransferPlatform };
+
   try {
     const idea = await Idea.create({
       creator: req.user._id,
       title,
       description,
-      tags: tags.replace(/\s/g, '').split(','), // remove whitespace & convert str to array
+      tags: tags.toLowerCase().replace(/\s/g, '').split(','), // remove whitespace & convert str to array
+      bounty: bountyObj,
     });
 
     await idea.save();

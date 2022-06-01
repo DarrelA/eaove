@@ -18,11 +18,6 @@
 
 ### WIP
 
-- Ideas Page
-
-### Coming Soon
-
-- User Account Dashboard
 - Reputation System
   - User has completed the challenge
   - Creator may place a bounty
@@ -31,6 +26,11 @@
   - User may downvote creator after stating the reason
   - Creator may choose to response
   - Communication will be public to allow other challengers to decide if they want to commit to challenges posted by creator at their own discretion
+
+### Coming Soon
+
+- User Account Dashboard
+- More Idea Pages: Challenging & Completed
 - https://colorpalettes.earth/
 - @TODO
 

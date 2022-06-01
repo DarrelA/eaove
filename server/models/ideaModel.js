@@ -12,6 +12,17 @@ const ideaSchema = mongoose.Schema(
     downvotesCount: { type: Number, default: 0 },
     comments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
     commentsCount: { type: Number, default: 0 },
+    bounty: {
+      currency: { type: String, maxLength: 3 },
+      value: { type: Number, required: true, default: 0, min: 0, max: 50_000_000_000 },
+      fundsTransferPlatform: { type: String, maxLength: 80 },
+      edited: { type: Number, required: true, default: 0 },
+      editedAt: [{ type: Date, default: Date.now }],
+      timeLimit: {
+        type: Date, // Default to 7 days time limit challenge
+        default: () => new Date(+new Date() + 7 * 24 * 60 * 60 * 1000),
+      },
+    },
     challengeOpen: { type: Boolean, default: true },
     challengers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     challengersComments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
