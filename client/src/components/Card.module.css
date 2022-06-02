@@ -21,6 +21,11 @@
   height: 98rem;
 }
 
+.long {
+  width: 86rem;
+  height: 44rem;
+}
+
 .card:first-letter {
   text-transform: uppercase;
 }

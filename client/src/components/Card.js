@@ -1,12 +1,11 @@
 import classes from './Card.module.css';
 
-const Card = ({ children, ideaId }) => {
-  // small cards for Landing page & big card for ThisIdea page
-  const cardClasses = ideaId
-    ? `${classes.big} ${classes.card} `
-    : `${classes.small} ${classes.card} `;
+const Card = ({ children, size }) => {
+  // small cards: Landing page
+  // big card: ThisIdea page
+  // long card: IdeaChallengers page
 
-  return <div className={cardClasses}>{children}</div>;
+  return <div className={`${classes.card} ${classes[`${size}`]}`}>{children}</div>;
 };
 
 export default Card;

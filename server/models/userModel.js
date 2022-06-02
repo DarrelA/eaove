@@ -12,7 +12,10 @@ const userSchema = mongoose.Schema(
       unique: true,
       required: true,
     },
-    // Based on the number of user's post upvotes
+    // Upvote button for user to award creator with 10 karma points after completing the challenge
+    // Downvote button for user to fine 20 karma points from creator if
+    // creator fail to donate the pledged amount OR
+    // creator make a chargeback after receiving the upvote
     karma: { type: Number, required: true, default: 0 },
 
     // Based on the amount of Eaove coins donated to the community

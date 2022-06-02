@@ -102,7 +102,7 @@ const getIdeasByTags = async (req, res, next) => {
 const getIdeaChallengers = async (req, res, next) => {
   try {
     const ideas = await Idea.findById(req.params.ideaid)
-      .select('challengers')
+      .select('challengers challengersCompleted')
       .populate('challengers', 'name');
 
     return res.status(200).send(ideas);
@@ -167,6 +167,15 @@ const acceptIdeaChallenge = async (req, res, next) => {
     let idea = await Idea.findById(req.params.ideaid);
     if (!idea) return next(new HttpError('Idea not found.', 400));
 
+    const completedByUser = idea.challengersCompleted.filter(
+      (id) => String(id) === String(req.user._id)
+    );
+
+    if (completedByUser.length === 1)
+      return next(
+        new HttpError('You cannot reject the challenge after completion!', 400)
+      );
+
     const challengedByUser = idea.challengers.filter(
       (id) => String(id) === String(req.user._id)
     );
@@ -179,6 +188,39 @@ const acceptIdeaChallenge = async (req, res, next) => {
         (id) => String(id) !== String(req.user._id)
       );
       idea.challengersCount--;
+    }
+
+    await idea.save();
+    return res.status(201).send({ message: 'success' });
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
+};
+
+const completedIdeaChallenge = async (req, res, next) => {
+  try {
+    let idea = await Idea.findById(req.params.ideaid);
+    if (!idea) return next(new HttpError('Idea not found.', 400));
+
+    const challengedByUser = idea.challengers.filter(
+      (id) => String(id) === String(req.user._id)
+    );
+    if (challengedByUser.length === 0)
+      return next(new HttpError('You need to accept the challenge first!', 400));
+
+    const completedByUser = idea.challengersCompleted.filter(
+      (id) => String(id) === String(req.user._id)
+    );
+
+    if (completedByUser.length === 0) {
+      idea.challengersCompleted.push(req.user._id);
+      idea.completedCount++;
+    } else {
+      idea.challengersCompleted = idea.challengersCompleted.filter(
+        (id) => String(id) !== String(req.user._id)
+      );
+      idea.completedCount--;
     }
 
     await idea.save();
@@ -245,6 +287,7 @@ export {
   newIdea,
   voteIdea,
   acceptIdeaChallenge,
+  completedIdeaChallenge,
   updateIdea,
   deleteIdea,
 };

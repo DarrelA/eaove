@@ -2,6 +2,7 @@
 
 - Eaove: What are the Earthlings doing today?
 - Suggest something for someone to do!
+- Take up challenges and you might receive donations for it!
 
 ## Features
 
@@ -9,6 +10,7 @@
 
 - Google Login
 - Submit new idea to database
+  - Create bounty for idea
 - Get all ideas from database
 - Update creator's idea in database
 - Delete creator's idea in database
@@ -20,6 +22,7 @@
 
 - Reputation System
   - User has completed the challenge
+    - Inbox to notify creator
   - Creator may place a bounty
     - Creator set a time limit for it
   - If user reports that creator has yet to donate after a week is true
@@ -30,7 +33,9 @@
 ### Coming Soon
 
 - User Account Dashboard
-- More Idea Pages: Challenging & Completed
+  - Total upvotes & downvotes
+- Idea Page: Pagination and sorting
+- More Idea Pages: Challenging, Completed & Eaove (Suggestions are subjected to moderation)
 - https://colorpalettes.earth/
 - @TODO
 

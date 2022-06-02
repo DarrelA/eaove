@@ -79,11 +79,19 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
-    case 'CHALLENGE_IDEA_SUCCESS': {
+    case 'ACCEPT_CHALLENGE_IDEA_SUCCESS': {
       return { ...state, isLoading: false };
     }
 
-    case 'CHALLENGE_IDEA_FAIL': {
+    case 'ACCEPT_CHALLENGE_IDEA_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
+    case 'COMPLETED_CHALLENGE_IDEA_SUCCESS': {
+      return { ...state, isLoading: false };
+    }
+
+    case 'COMPLETED_CHALLENGE_IDEA_FAIL': {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
@@ -280,10 +288,30 @@ const UserProvider = ({ children }) => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message);
       getIdeaChallengers(ideaId); // @TODO Better method? And fix flickering?
-      dispatch({ type: 'CHALLENGE_IDEA_SUCCESS', payload: data });
+      dispatch({ type: 'ACCEPT_CHALLENGE_IDEA_SUCCESS', payload: data });
       clearAlert();
     } catch (e) {
-      dispatch({ type: 'CHALLENGE_IDEA_FAIL', payload: e });
+      dispatch({ type: 'ACCEPT_CHALLENGE_IDEA_FAIL', payload: e });
+      clearAlert();
+    }
+  };
+
+  const completedIdeaChallenge = async (ideaId) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/idea/completedideachallenge/${ideaId}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      getIdeaChallengers(ideaId); // @TODO Better method? And fix flickering?
+      dispatch({ type: 'COMPLETED_CHALLENGE_IDEA_SUCCESS', payload: data });
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'COMPLETED_CHALLENGE_IDEA_FAIL', payload: e });
       clearAlert();
     }
   };
@@ -340,6 +368,7 @@ const UserProvider = ({ children }) => {
         getIdeaChallengers,
         voteIdea,
         acceptIdeaChallenge,
+        completedIdeaChallenge,
         updateIdea,
         deleteIdea,
       }}

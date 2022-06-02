@@ -18,7 +18,7 @@ const initialState = {
   vote: '',
 };
 
-const Idea = ({ idea }) => {
+const Idea = ({ idea, cardSize }) => {
   const userContext = useUserContext();
   const { _id, isLoading, message, voteIdea, deleteIdea } = userContext;
   const [formData, setFormData] = useState(initialState);
@@ -48,7 +48,7 @@ const Idea = ({ idea }) => {
   if (isLoading) return; // @TODO Add spinner
 
   return (
-    <Card ideaId={ideaId}>
+    <Card size={cardSize}>
       <div className={classes.content}>
         <Link to={`/ideas/${idea._id}`}>
           <h3>{idea.title}</h3>

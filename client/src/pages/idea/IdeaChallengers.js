@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, Navbar } from '../../components';
-import classes from '../../components/Card.module.css';
 import useUserContext from '../../context/userContext';
 
 const IdeaChallengers = () => {
@@ -14,8 +13,10 @@ const IdeaChallengers = () => {
     getIdeaChallengers,
     challengeIdea,
     acceptIdeaChallenge,
+    completedIdeaChallenge,
   } = userContext;
   const [accepted, setAccepted] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   const { ideaId } = useParams();
 
@@ -32,31 +33,45 @@ const IdeaChallengers = () => {
     const challengedByUser = challengeIdea?.challengers.findIndex(
       (challenger) => String(challenger._id) === String(_id)
     );
-    challengedByUser === 1 ? setAccepted(true) : setAccepted(false);
-  }, [_id, challengeIdea?.challengers]);
 
-  const challengeHandler = () => acceptIdeaChallenge(ideaId);
+    const completedByUser = challengeIdea?.challengersCompleted.findIndex(
+      (challenger) => String(challenger) === String(_id)
+    );
+
+    challengedByUser !== -1 ? setAccepted(true) : setAccepted(false);
+    completedByUser !== -1 ? setCompleted(true) : setCompleted(false);
+  }, [_id, challengeIdea?.challengers, challengeIdea?.challengersCompleted]);
 
   if (isLoading) return; // @TODO Add spinner
-  console.log();
 
   return (
     <>
       <Navbar />
 
-      {_id && ideaId && (
-        <button
-          id="challengeIdea"
-          onClick={challengeHandler}
-          className={`btn btn--full ${classes.challengeIdea}`}
-        >
-          {accepted ? 'ACCEPTED' : 'CHALLENGE!'}
-        </button>
-      )}
+      <div className={`container center`}>
+        {_id && ideaId && !completed && (
+          <button
+            id="challengeIdea"
+            onClick={() => acceptIdeaChallenge(ideaId)}
+            className={`btn btn--full`}
+          >
+            {accepted ? 'ACCEPTED' : 'CHALLENGE!'}
+          </button>
+        )}
 
-      <div className={`container ${classes.grid}`}>
+        {/* @TODO: Evidence validation - post youtube video link in comment*/}
+        {_id && ideaId && accepted && (
+          <button
+            id="completedIdea"
+            onClick={() => completedIdeaChallenge(ideaId)}
+            className={`btn btn--full`}
+          >
+            {completed ? 'COMPLETED' : 'IN PROGRESS'}
+          </button>
+        )}
+
         {challengeIdea?.challengers.map((challenger) => (
-          <Card key={challenger._id}>
+          <Card key={challenger._id} size="long">
             {challenger._id}
             <h3>{challenger.name}</h3>
           </Card>

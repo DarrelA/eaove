@@ -29,7 +29,7 @@ const Landing = () => {
       <Navbar />
       <div className={`container ${classes.grid}`}>
         {ideas?.map((idea) => (
-          <Idea key={idea._id} idea={idea} />
+          <Idea key={idea._id} idea={idea} cardSize="small" />
         ))}
       </div>
     </>

@@ -31,7 +31,7 @@ const ThisIdea = () => {
     <>
       <Navbar />
       <div className="container center">
-        {idea && <Idea key={idea._id} idea={idea} />}
+        {idea && <Idea key={idea._id} idea={idea} cardSize="big" />}
       </div>
     </>
   );

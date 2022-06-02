@@ -6,6 +6,7 @@ import {
   newIdea,
   voteIdea,
   acceptIdeaChallenge,
+  completedIdeaChallenge,
   updateIdea,
   deleteIdea,
 } from '../controller/ideaController.js';
@@ -20,6 +21,7 @@ router.get('/:ideaid/challengers', getIdeaChallengers);
 router.post('/newidea', authMiddleware, newIdea);
 router.post('/voteidea', authMiddleware, voteIdea);
 router.post('/acceptideachallenge/:ideaid', authMiddleware, acceptIdeaChallenge);
+router.post('/completedideachallenge/:ideaid', authMiddleware, completedIdeaChallenge);
 
 router.patch('/updateidea', authMiddleware, updateIdea);
 
