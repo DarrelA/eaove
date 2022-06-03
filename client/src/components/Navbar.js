@@ -1,21 +1,25 @@
 import { Link } from 'react-router-dom';
 import useUserContext from '../context/userContext';
+import classes from './Navbar.module.css';
 
 const Navbar = () => {
   const { _id, avatar, logout } = useUserContext();
 
   return (
-    <header className="header">
+    <header className={classes.header}>
       {/* @TODO: Add Eaove Logo */}
-      <Link to="/" className="main-nav-link">
+      <Link to="/" className={classes['main-nav-link']}>
         Home
       </Link>
 
-      <nav className="main-nav">
-        <ul className="main-nav-list">
+      <nav className={classes['main-nav']}>
+        <ul className={classes['main-nav-list']}>
           {!_id && (
             <li>
-              <Link to="/login" className="main-nav-link nav-cta">
+              <Link
+                to="/login"
+                className={`${classes['main-nav-link']} ${classes['nav-cta']}`}
+              >
                 Login
               </Link>
             </li>
@@ -24,22 +28,25 @@ const Navbar = () => {
           {_id && (
             <>
               <li>
-                <Link to="/idea/create/newidea" className="main-nav-link nav-cta">
+                <Link
+                  to="/idea/create/newidea"
+                  className={`${classes['main-nav-link']} ${classes['nav-cta']}`}
+                >
                   New Idea
                 </Link>
               </li>
               <li>
-                <Link to="/" className="main-nav-link" onClick={logout}>
+                <Link to="/" className={classes['main-nav-link']} onClick={logout}>
                   Logout
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard" className={'main-nav-link '}>
+                <Link to="/dashboard" className={classes['main-nav-link']}>
                   {!avatar ? (
                     'Profile'
                   ) : (
                     <img
-                      className="avatar"
+                      className={classes.avatar}
                       src={`/api/user/images/${avatar}`}
                       alt="profile"
                     />

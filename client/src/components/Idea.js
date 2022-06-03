@@ -67,11 +67,11 @@ const Idea = ({ idea, cardSize }) => {
             {ideaId && _id === idea.creator._id && (
               <>
                 <Link to={`/idea/edit/${idea._id}`} state={{ idea }}>
-                  <RiPencilFill size={'4rem'} />
+                  <RiPencilFill size={'4rem'} className={classes.icon} />
                 </Link>
 
                 <button type="button" onClick={() => deleteIdea(ideaId)}>
-                  <RiDeleteBin5Line size={'4rem'} />
+                  <RiDeleteBin5Line size={'4rem'} className={classes.icon} />
                 </button>
               </>
             )}
@@ -80,7 +80,7 @@ const Idea = ({ idea, cardSize }) => {
               <Link to={`/`}>
                 <button type="button" id="bounty">
                   <h4>{idea.bounty.currency + ' ' + idea.bounty.value}</h4>
-                  <RiExchangeDollarLine size={'4rem'} />
+                  <RiExchangeDollarLine size={'4rem'} className={classes.icon} />
                 </button>
               </Link>
             )}
@@ -88,7 +88,7 @@ const Idea = ({ idea, cardSize }) => {
             <Link to={`/acceptideachallenge/${idea._id}`}>
               <button type="button" id="challengerscount">
                 <h4>{idea.challengersCount}</h4>
-                <RiBoxingFill size={'4rem'} />
+                <RiBoxingFill size={'4rem'} className={classes.icon} />
               </button>
             </Link>
 
@@ -96,7 +96,11 @@ const Idea = ({ idea, cardSize }) => {
               <h4>{idea.downvotesCount}</h4>
               <RiArrowDownSFill
                 size={'4rem'}
-                className={idea.downvotes?.length === 1 ? classes.icons : ''}
+                className={
+                  idea.downvotes?.length === 1
+                    ? `${classes.icon} ${classes.vote}`
+                    : classes.icon
+                }
               />
             </button>
 
@@ -104,7 +108,11 @@ const Idea = ({ idea, cardSize }) => {
               <h4>{idea.upvotesCount}</h4>
               <RiArrowUpSFill
                 size={'4rem'}
-                className={idea.upvotes?.length === 1 ? classes.icons : ''}
+                className={
+                  idea.upvotes?.length === 1
+                    ? `${classes.icon} ${classes.vote}`
+                    : classes.icon
+                }
               />
             </button>
           </div>
