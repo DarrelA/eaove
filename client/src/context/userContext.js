@@ -111,6 +111,14 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
+    case 'NEW_COMMENT_SUCCESS': {
+      return { ...state, isLoading: false, ...action.payload };
+    }
+
+    case 'NEW_COMMENT_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
     default:
       return initialState;
   }
@@ -356,6 +364,27 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const newComment = async ({ ideaId, comment }) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/comments/newcomment`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ideaId, comment }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'NEW_COMMENT_SUCCESS', payload: data });
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'NEW_COMMENT_FAIL', payload: e });
+      clearAlert();
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -371,6 +400,7 @@ const UserProvider = ({ children }) => {
         completedIdeaChallenge,
         updateIdea,
         deleteIdea,
+        newComment,
       }}
     >
       {children}

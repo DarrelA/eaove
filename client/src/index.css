@@ -192,6 +192,7 @@ html {
   background: var(--primary-300);
   padding: 3rem;
   border-radius: 3rem;
+  color: var(--backgroundColor);
 }
 
 .form h2 {

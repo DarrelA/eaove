@@ -5,7 +5,7 @@ import passport from 'passport';
 import connectDB from './db/connectDB.js';
 import { errorMiddleware, notFoundMiddleware } from './middleware/errorMiddleware.js';
 import './passports/google-oauth20.js';
-import { ideaRoutes, passportRoutes } from './routes/index.js';
+import { commentRoutes, ideaRoutes, passportRoutes } from './routes/index.js';
 
 const app = express();
 const port = process.env.PORT;
@@ -26,6 +26,7 @@ app.use(passport.session());
 
 app.use('/api/auth', passportRoutes);
 app.use('/api/idea', ideaRoutes);
+app.use('/api/comments', commentRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

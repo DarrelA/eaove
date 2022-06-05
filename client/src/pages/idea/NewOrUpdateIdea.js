@@ -127,6 +127,7 @@ const NewOrUpdateIdea = () => {
               value={bounty}
               placeholder="10"
               onChange={(e) => setBounty(e.target.value)}
+              min="0"
             />
           </div>
 

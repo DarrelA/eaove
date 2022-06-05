@@ -14,6 +14,8 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+// @TODO: Refactor routes
+
 router.get('/ideas', getAllIdeas);
 router.get('/ideas/:tag', getIdeasByTags);
 router.get('/:ideaid/challengers', getIdeaChallengers);

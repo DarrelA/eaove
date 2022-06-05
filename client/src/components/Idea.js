@@ -6,6 +6,7 @@ import {
   RiDeleteBin5Line,
   RiExchangeDollarLine,
   RiPencilFill,
+  RiChatNewLine,
 } from 'react-icons/ri';
 import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -89,6 +90,13 @@ const Idea = ({ idea, cardSize }) => {
               <button type="button" id="challengerscount">
                 <h4>{idea.challengersCount}</h4>
                 <RiBoxingFill size={'4rem'} className={classes.icon} />
+              </button>
+            </Link>
+
+            <Link to={`/newcomment/${idea._id}`} state={{ idea }}>
+              <button type="button" id="newcomment">
+                <h4>{idea.commentsCount}</h4>
+                <RiChatNewLine size={'4rem'} className={classes.icon} />
               </button>
             </Link>
 
