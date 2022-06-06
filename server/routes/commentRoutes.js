@@ -8,8 +8,8 @@ import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/', getAllComments);
-router.get('/challengers', authMiddleware, getAllChallengersComments);
+router.get('/:ideaId', getAllComments);
+router.get('/challengers/:ideaId', getAllChallengersComments);
 
 router.post('/newcomment', newComment);
 

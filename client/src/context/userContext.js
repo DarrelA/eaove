@@ -119,6 +119,14 @@ const userReducer = (state, action) => {
       return { ...state, isLoading: false, message: action.payload.message };
     }
 
+    case 'GET_ALL_COMMENTS_SUCCESS': {
+      return { ...state, isLoading: false, ideaComments: action.payload.comments };
+    }
+
+    case 'GET_ALL_COMMENTS_FAIL': {
+      return { ...state, isLoading: false, message: action.payload.message };
+    }
+
     default:
       return initialState;
   }
@@ -385,6 +393,23 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const getAllComments = useCallback(async (ideaId) => {
+    dispatch({ type: 'IS_LOADING' });
+
+    try {
+      const response = await fetch(`/api/comments/${ideaId}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      dispatch({ type: 'GET_ALL_COMMENTS_SUCCESS', payload: data });
+
+      // @TODO: Store comments in localStorage
+      clearAlert();
+    } catch (e) {
+      dispatch({ type: 'GET_ALL_COMMENTS_FAIL', payload: e });
+      clearAlert();
+    }
+  }, []);
+
   return (
     <UserContext.Provider
       value={{
@@ -401,6 +426,7 @@ const UserProvider = ({ children }) => {
         updateIdea,
         deleteIdea,
         newComment,
+        getAllComments,
       }}
     >
       {children}

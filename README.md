@@ -32,8 +32,13 @@
 
 ### Coming Soon
 
+- Report Button
 - User Account Dashboard
   - Total upvotes & downvotes
+  - Followers
+  - Eaove Coin
+    - Show balance
+    - Amount donated to community
 - Idea Page: Pagination and sorting
 - More Idea Pages: Challenging, Completed & Eaove (Suggestions are subjected to moderation)
 - https://colorpalettes.earth/

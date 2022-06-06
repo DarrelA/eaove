@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Idea, Navbar } from '../../components';
+import { Card, Idea, Navbar } from '../../components';
 import useUserContext from '../../context/userContext';
 
 const ThisIdea = () => {
   const userContext = useUserContext();
-  const { isLoading, message, ideas } = userContext;
+  const { isLoading, message, ideas, getAllComments, ideaComments } = userContext;
   const [idea, getIdea] = useState(null);
 
   const { ideaId } = useParams();
@@ -24,7 +24,23 @@ const ThisIdea = () => {
     }
   }, [ideas, ideaId]);
 
+  useEffect(() => {
+    if (ideaId) {
+      const fetchAllComments = async () => await getAllComments(ideaId);
+      fetchAllComments();
+    }
+  }, [getAllComments, ideaId]);
+
   if (isLoading) return; // @TODO Add spinner
+
+  const commentCard =
+    ideaComments &&
+    ideaComments.map((ideaComment) => (
+      <Card key={ideaComment._id}>
+        {ideaComment.user.name}
+        {ideaComment.comment}
+      </Card>
+    ));
 
   // @TODO Display a single card
   return (
@@ -32,6 +48,7 @@ const ThisIdea = () => {
       <Navbar />
       <div className="container center">
         {idea && <Idea key={idea._id} idea={idea} cardSize="big" />}
+        {commentCard}
       </div>
     </>
   );

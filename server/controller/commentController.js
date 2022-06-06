@@ -22,54 +22,29 @@ const newComment = async (req, res, next) => {
 };
 
 const getAllComments = async (req, res, next) => {
-  // try {
-  //   if (req.user) {
-  //     const ideas = await Idea.find({}).populate('creator', 'name');
-  //     ideas.forEach((idea) => {
-  //       idea.upvotes = idea.upvotes.filter((id) => String(id) === String(req.user._id));
-  //       idea.downvotes = idea.downvotes.filter(
-  //         (id) => String(id) === String(req.user._id)
-  //       );
-  //     });
-  //     return res.status(200).send(ideas);
-  //   } else {
-  //     const ideas = await Idea.find({})
-  //       .select('-upvotes -downvotes')
-  //       .populate('creator', 'name');
-  //     return res.status(200).send(ideas);
-  //   }
-  // } catch (e) {
-  //   console.log(e);
-  //   return next(new HttpError('Something went wrong!', 500));
-  // }
+  try {
+    const comments = await Idea.findById(req.params.ideaId)
+      .select('comments')
+      .populate({ path: 'comments', populate: { path: 'user', select: 'name' } });
+
+    return res.status(200).send(comments);
+  } catch (e) {
+    console.log(e);
+    return next(new HttpError('Something went wrong!', 500));
+  }
 };
 
-const getAllChallengersComments = async (req, res, next) => {
-  // try {
-  //   if (req.user) {
-  //     const ideas = await Idea.find({ tags: `${req.params.tag}` }).populate(
-  //       'creator',
-  //       'name'
-  //     );
-  //     ideas.forEach((idea) => {
-  //       idea.upvotes = idea.upvotes.filter((id) => String(id) === String(req.user._id));
-  //       idea.downvotes = idea.downvotes.filter(
-  //         (id) => String(id) === String(req.user._id)
-  //       );
-  //     });
-  //     if (!ideas) return next(new HttpError('Idea not found.', 400));
-  //     return res.status(200).send(ideas);
-  //   } else {
-  //     const ideas = await Idea.find({ tags: `${req.params.tag}` })
-  //       .select('-upvotes -downvotes')
-  //       .populate('creator', 'name');
-  //     if (!ideas) return next(new HttpError('Idea not found.', 400));
-  //     return res.status(200).send(ideas);
-  //   }
-  // } catch (e) {
-  //   console.log(e);
-  //   return next(new HttpError('Something went wrong!', 500));
-  // }
-};
+// const getAllChallengersComments = async (req, res, next) => {
+//   try {
+//     const comments = await Idea.findById(req.params.ideaId)
+//       .select('challengersComments')
+//       .populate({ path: 'comments', populate: { path: 'user', select: 'name' } });
+
+//     return res.status(200).send(comments);
+//   } catch (e) {
+//     console.log(e);
+//     return next(new HttpError('Something went wrong!', 500));
+//   }
+// };
 
 export { newComment, getAllComments, getAllChallengersComments };
