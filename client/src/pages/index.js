@@ -1,6 +1,6 @@
 import SharedLayout from './dashboard/SharedLayout.js';
 import IdeaChallengers from './idea/IdeaChallengers';
-import IdeaComments from './idea/IdeaComments.js';
+import IdeaComment from './idea/IdeaComment.js';
 import NewOrUpdateIdea from './idea/NewOrUpdateIdea.js';
 import ThisIdea from './idea/ThisIdea.js';
 import Landing from './Landing.js';
@@ -15,5 +15,5 @@ export {
   NewOrUpdateIdea,
   ThisIdea,
   IdeaChallengers,
-  IdeaComments,
+  IdeaComment,
 };

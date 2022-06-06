@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, Navbar } from '../../components';
 import useUserContext from '../../context/userContext';
@@ -13,7 +13,8 @@ const IdeaChallengers = () => {
     getIdeaChallengers,
     challengeIdea,
     acceptIdeaChallenge,
-    completedIdeaChallenge,
+    getAllComments,
+    challengersComments,
   } = userContext;
   const [accepted, setAccepted] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -42,6 +43,22 @@ const IdeaChallengers = () => {
     completedByUser !== -1 ? setCompleted(true) : setCompleted(false);
   }, [_id, challengeIdea?.challengers, challengeIdea?.challengersCompleted]);
 
+  useEffect(() => {
+    if (ideaId) {
+      const fetchAllComments = async () => await getAllComments(ideaId);
+      fetchAllComments();
+    }
+  }, [getAllComments, ideaId]);
+
+  const commentCard =
+    challengersComments &&
+    challengersComments.map((ideaComment) => (
+      <Card key={ideaComment._id}>
+        {ideaComment.user.name}
+        {ideaComment.comment}
+      </Card>
+    ));
+
   if (isLoading) return; // @TODO Add spinner
 
   return (
@@ -60,14 +77,13 @@ const IdeaChallengers = () => {
         )}
 
         {/* @TODO: Evidence validation - post youtube video link in comment*/}
+        {/* @TODO: Disable COMPLETED button?*/}
         {_id && ideaId && accepted && (
-          <button
-            id="completedIdea"
-            onClick={() => completedIdeaChallenge(ideaId)}
-            className={`btn btn--full`}
-          >
-            {completed ? 'COMPLETED' : 'IN PROGRESS'}
-          </button>
+          <Link to={`/challengercomment/${ideaId}`}>
+            <button id="completedIdea" className={`btn btn--full`}>
+              {completed ? 'COMPLETED' : 'SUBMIT COMPLETION'}
+            </button>
+          </Link>
         )}
 
         {challengeIdea?.challengers.map((challenger) => (
@@ -76,6 +92,8 @@ const IdeaChallengers = () => {
             <h3>{challenger.name}</h3>
           </Card>
         ))}
+
+        {commentCard}
       </div>
     </>
   );

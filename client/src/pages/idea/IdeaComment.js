@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 import { Navbar } from '../../components';
 import useUserContext from '../../context/userContext';
 
-const NewOrUpdateIdea = () => {
+const IdeaComment = () => {
   const userContext = useUserContext();
   const { isLoading, message, newComment } = userContext;
+  const [basicComment, setBasicComment] = useState(true);
 
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
@@ -15,7 +16,7 @@ const NewOrUpdateIdea = () => {
   const { idea } = location.state || {};
 
   const navigate = useNavigate();
-  const { ideaId } = useParams();
+  const { ideaComment, ideaId } = useParams();
 
   useEffect(() => {
     if (message === 'success') navigate('/');
@@ -26,6 +27,10 @@ const NewOrUpdateIdea = () => {
     if (idea) setTitle(idea.title);
   }, [idea, ideaId]);
 
+  useEffect(() => {
+    if (ideaComment === 'challengercomment') setBasicComment(false);
+  }, [ideaComment, ideaId]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     comment.trim();
@@ -33,7 +38,7 @@ const NewOrUpdateIdea = () => {
     if (comment.length > 1500)
       return toast.error('Please keep it within 1,500 characters.');
 
-    newComment({ ideaId, comment });
+    newComment({ ideaId, comment, basicComment });
   };
 
   if (isLoading) return; // @TODO Add spinner
@@ -58,11 +63,13 @@ const NewOrUpdateIdea = () => {
             />
           </div>
 
-          <button className="btn btn--form">Submit</button>
+          <button className="btn btn--form">
+            {basicComment ? 'Submit' : 'COMPLETE CHALLENGE!!!'}
+          </button>
         </form>
       </section>
     </>
   );
 };
 
-export default NewOrUpdateIdea;
+export default IdeaComment;

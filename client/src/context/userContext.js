@@ -120,7 +120,8 @@ const userReducer = (state, action) => {
     }
 
     case 'GET_ALL_COMMENTS_SUCCESS': {
-      return { ...state, isLoading: false, ideaComments: action.payload.comments };
+      const { comments, challengersComments } = action.payload;
+      return { ...state, isLoading: false, ideaComments: comments, challengersComments };
     }
 
     case 'GET_ALL_COMMENTS_FAIL': {
@@ -356,6 +357,8 @@ const UserProvider = ({ children }) => {
   const deleteIdea = async (ideaId) => {
     dispatch({ type: 'IS_LOADING' });
 
+    // @TODO: Delete all comments
+
     try {
       const response = await fetch(`/api/idea/deleteidea/${ideaId}`, {
         method: 'DELETE',
@@ -372,15 +375,16 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const newComment = async ({ ideaId, comment }) => {
+  const newComment = async ({ ideaId, comment, basicComment }) => {
     dispatch({ type: 'IS_LOADING' });
 
     try {
+      completedIdeaChallenge(ideaId);
       const response = await fetch(`/api/comments/newcomment`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ideaId, comment }),
+        body: JSON.stringify({ ideaId, comment, basicComment }),
       });
 
       const data = await response.json();
@@ -399,6 +403,7 @@ const UserProvider = ({ children }) => {
     try {
       const response = await fetch(`/api/comments/${ideaId}`);
       const data = await response.json();
+
       if (!response.ok) throw new Error(data.message);
       dispatch({ type: 'GET_ALL_COMMENTS_SUCCESS', payload: data });
 
