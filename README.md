@@ -17,14 +17,14 @@
 - Upvote & downvote ideas
 - Challenge ideas
 - Search ideas by tag
+- Comment on idea
+- Challenger's comment section for each idea
 
 ### WIP
 
 - Reputation System
-  - User has completed the challenge
-    - Inbox to notify creator
-  - Creator may place a bounty
-    - Creator set a time limit for it
+  - Inbox: Notify creator when a challenger has completed the challenge
+  - Creator may set a time limit for challenge
   - If user reports that creator has yet to donate after a week is true
   - User may downvote creator after stating the reason
   - Creator may choose to response

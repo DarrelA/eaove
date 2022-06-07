@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { RiReplyLine } from 'react-icons/ri';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, Idea, Navbar } from '../../components';
+import classes from '../../components/Card.module.css';
 import useUserContext from '../../context/userContext';
 
 const ThisIdea = () => {
@@ -33,12 +35,23 @@ const ThisIdea = () => {
 
   if (isLoading) return; // @TODO Add spinner
 
+  // @TODO Map out comments and replies recursively
   const commentCard =
     ideaComments &&
     ideaComments.map((ideaComment) => (
       <Card key={ideaComment._id}>
         {ideaComment.user.name}
         {ideaComment.comment}
+        <div className={classes.actions}>
+          <Link
+            to={`/newcomment/${idea?._id}`}
+            state={{ idea, thisIdeaComment: ideaComment }}
+          >
+            <button type="button" id="reply">
+              <RiReplyLine size={'4rem'} className={classes.icon} />
+            </button>
+          </Link>
+        </div>
       </Card>
     ));
 

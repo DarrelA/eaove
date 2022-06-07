@@ -13,7 +13,7 @@ const IdeaComment = () => {
   const [comment, setComment] = useState('');
 
   const location = useLocation();
-  const { idea } = location.state || {};
+  const { idea, thisIdeaComment } = location.state || {};
 
   const navigate = useNavigate();
   const { ideaComment, ideaId } = useParams();
@@ -24,8 +24,9 @@ const IdeaComment = () => {
   }, [message, navigate]);
 
   useEffect(() => {
-    if (idea) setTitle(idea.title);
-  }, [idea, ideaId]);
+    if (thisIdeaComment) setTitle(thisIdeaComment.comment);
+    else if (idea) setTitle(idea.title);
+  }, [idea, ideaId, thisIdeaComment]);
 
   useEffect(() => {
     if (ideaComment === 'challengercomment') setBasicComment(false);
@@ -38,7 +39,7 @@ const IdeaComment = () => {
     if (comment.length > 1500)
       return toast.error('Please keep it within 1,500 characters.');
 
-    newComment({ ideaId, comment, basicComment });
+    newComment({ ideaId, comment, basicComment, commentId: thisIdeaComment?._id });
   };
 
   if (isLoading) return; // @TODO Add spinner

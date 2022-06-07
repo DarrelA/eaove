@@ -375,7 +375,7 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  const newComment = async ({ ideaId, comment, basicComment }) => {
+  const newComment = async ({ ideaId, comment, basicComment, commentId }) => {
     dispatch({ type: 'IS_LOADING' });
 
     try {
@@ -384,7 +384,7 @@ const UserProvider = ({ children }) => {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ideaId, comment, basicComment }),
+        body: JSON.stringify({ ideaId, comment, basicComment, commentId }),
       });
 
       const data = await response.json();
